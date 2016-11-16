@@ -1,0 +1,296 @@
+
+
+---
+name    : usbpix_gpac
+version : 2.0.0
+
+transfer_layer:
+    - name  : USB
+      type  : SiUsb
+      board_id : 129
+      init : 
+        bit_file : ../firmware/bit/lfcpix.bit
+
+hw_drivers:
+  - name      : GPAC
+    type      : GPAC
+    interface : USB
+    base_addr : 0x00000
+    init :
+        no_calibration : True
+
+#### FEI4 & common
+  - name      : sram
+    type      : sram_fifo
+    interface : USB
+    base_addr : 0x18100
+    base_data_addr : 0x0001000000000000
+  - name      : tlu
+    type      : tlu
+    interface : USB
+    base_addr : 0x18200
+  - name      : gpio_rx
+    type      : gpio
+    interface : USB
+    base_addr : 0x18800
+#### adc
+  - name      : SPI_FADC
+    type      : spi
+    interface : USB
+    base_addr : 0x18840
+    mem_bytes : 2
+  - name      : fadc0_rx
+    type      : fadc_rx
+    interface : USB
+    base_addr : 0x18870
+
+#### ccpd
+  - name      : ccpd_spi
+    type      : spi
+    interface : USB
+    base_addr : 0x18900
+    mem_bytes : 370
+  - name      : CCPD_SPI_RX
+    type      : fast_spi_rx
+    interface : USB
+    base_addr : 0x18B00
+  - name      : ccpd_gpio
+    type      : gpio
+    interface : USB
+    base_addr : 0x18C00
+  - name      : CCPD_TDC
+    type      : tdc_s3
+    interface : USB
+    base_addr : 0x18C20
+  - name      : CCPD_PULSE_GATE
+    type      : pulse_gen
+    interface : USB
+    base_addr : 0x18C40
+  - name      : CCPD_PULSE_INJ
+    type      : pulse_gen
+    interface : USB
+    base_addr : 0x18C50
+  - name      : CCPD_PULSE_THON
+    type      : pulse_gen
+    interface : USB
+    base_addr : 0x18C60
+  - name      : ccpd_gpio_adc_th
+    type      : gpio
+    interface : USB
+    base_addr : 0x18C80
+    size : 16
+    
+### additional equipments
+#  - name      : PULSER
+#    type      : agilent33250a
+#    interface : serial
+#    port : \\.\COM13
+    
+user_drivers:
+  - name      : fadc_conf
+    type      : FadcConf
+    hw_driver : SPI_FADC
+
+registers:
+  - name        : rx
+    type        : StdRegister
+    hw_driver   : gpio_rx
+    size        : 8
+    fields :
+      - name    : NC1
+        size    : 1
+        offset  : 5
+      - name    : NC
+        size    : 1
+        offset  : 4
+      - name    : CCPD_ADC
+        size    : 1
+        offset  : 3
+      - name    : CCPD_TDC
+        size    : 1
+        offset  : 2
+      - name    : CCPD_RX
+        size    : 1
+        offset  : 1
+      - name    : TLU
+        size    : 1
+        offset  : 0
+
+  - name        : CCPD_AMPOUT
+    type        : FunctionalRegister
+    hw_driver   : fadc0_rx
+
+  - name        : CCPD_SW
+    type        : StdRegister
+    hw_driver   : ccpd_gpio
+    size        : 8
+    fields:
+      - name    : SW_LDPIX
+        size    : 1
+        offset  : 0
+      - name    : SW_LDDAC
+        size    : 1
+        offset  : 1
+      - name    : SW_HIT
+        size    : 1
+        offset  : 2
+      - name    : TEST_HIT
+        size    : 1
+        offset  : 3
+      - name    : GATE_NEG
+        size    : 1
+        offset  : 4
+      - name    : THON_NEG
+        size    : 1
+        offset  : 5
+      - name    : EXT_START_TLU
+        size    : 1
+        offset  : 6
+      - name    : NC1
+        size    : 1
+        offset  : 7
+  - name        : CCPD_ADC_TH
+    type        : StdRegister
+    hw_driver   : ccpd_gpio_adc_th
+    size        : 16
+    fields:
+      - name    : VALUE
+        size    : 14
+        offset  : 13
+      - name    : SW
+        size    : 1
+        offset  : 6
+      - name    : STATUS
+        size    : 1
+        offset  : 7
+
+  - name        : CCPD_vdda
+    type        : FunctionalRegister
+    hw_driver   : GPAC
+    arg_names   : [value]
+    arg_add     : {'channel': 'PWR0'}
+
+  - name        : CCPD_vddaPRE
+    type        : FunctionalRegister
+    hw_driver   : GPAC
+    arg_names   : [value]
+    arg_add     : {'channel': 'PWR1'}
+
+  - name        : CCPD_vddd
+    type        : FunctionalRegister
+    hw_driver   : GPAC
+    arg_names   : [value]
+    arg_add     : {'channel': 'PWR2'}
+    
+  - name        : CCPD_VCascP
+    type        : FunctionalRegister
+    hw_driver   : GPAC
+    arg_names   : [ value ]
+    arg_add     : { 'channel': 'VSRC0'}
+  - name        : CCPD_TH
+    type        : FunctionalRegister
+    hw_driver   : GPAC
+    arg_names   : [ value ]
+    arg_add     : { 'channel': 'VSRC1'}
+  - name        : CCPD_VCasc2 
+    type        : FunctionalRegister
+    hw_driver   : GPAC
+    arg_names   : [ value ]
+    arg_add     : { 'channel': 'VSRC2'}
+  - name        : CCPD_VCascN
+    type        : FunctionalRegister
+    hw_driver   : GPAC
+    arg_names   : [ value ]
+    arg_add     : { 'channel': 'VSRC3'}
+    
+  - name        : CCPD_Injection_low
+    type        : FunctionalRegister
+    hw_driver   : GPAC
+    arg_names   : [ value ]
+    arg_add     : { 'channel': 'INJ1'}
+  - name        : CCPD_Injection_high
+    type        : FunctionalRegister
+    hw_driver   : GPAC
+    arg_names   : [ value ]
+    arg_add     : { 'channel': 'INJ0'}
+
+  - name        : CCPD_SR
+    type        : StdRegister
+    hw_driver   : ccpd_spi
+    size        : 2953
+    fields:
+        - name     : BLRes
+          size     : 6
+          offset   : 5
+        - name     : VAmp
+          size     : 6
+          offset   : 11
+        - name     : VPFB
+          size     : 6
+          offset   : 17
+        - name     : VPFoll
+          size     : 6
+          offset   : 23
+        - name     : VPLoad
+          size     : 6
+          offset   : 29
+        - name     : IComp
+          size     : 6
+          offset   : 35
+        - name     : VSTRETCH
+          size     : 6
+          offset   : 41
+        - name     : IBOTA
+          size     : 6
+          offset   : 47
+        - name     : IBCS
+          size     : 6
+          offset   : 53
+        - name     : WGT
+          size     : 6
+          offset   : 59
+        - name     : LSBdacL
+          size     : 6
+          offset   : 65
+        - name     : LSBdacL2
+          size     : 6
+          offset   : 71
+        - name     : IBCS2
+          size     : 6
+          offset   : 77
+        - name     : INJ_EN_AnaPassive
+          size     : 36
+          offset   : 113
+        - name     : TRIM_EN
+          size     : 4
+          offset   : 117
+        - name     : INJECT_EN
+          size     : 1
+          offset   : 118
+        - name     : MONITOR_EN
+          size     : 1
+          offset   : 119
+        - name     : PREAMP_EN
+          size     : 1
+          offset   : 120
+        - name     : PREAMP_EN_ANA
+          size     : 10
+          offset   : 130
+        - name     : MONITOR_EN_ANA
+          size     : 10
+          offset   : 140
+        - name     : SW_MON
+          size     : 36
+          offset   : 176
+        - name     : SW_INJ
+          size     : 18
+          offset   : 194
+        - name     : BUFFER_EN
+          size     : 1
+          offset   : 195
+        - name     : REGULATOR_EN
+          size     : 1
+          offset   : 196
+        - name     : Pixels
+          size     : 2756
+          offset   : 2952

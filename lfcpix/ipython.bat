@@ -1,0 +1,1 @@
+C:\programs\Anaconda\python.exe "C:\programs\Anaconda\Scripts\ipython-script.py" qtconsole --matplotlib=inline

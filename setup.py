@@ -12,7 +12,7 @@ version = f.readline().strip()
 f.close()
 
 author = 'Toko Hirono'
-author_email = 'thirono@physik.uni-bonn.de'
+author_email = 'hirono@physik.uni-bonn.de'
 
 # requirements for core functionality
 install_requires = ['basil-daq==2.4.3', 'bitarray>=0.8.1', 'matplotlib', 'numpy', 'pyyaml', 'scipy']
