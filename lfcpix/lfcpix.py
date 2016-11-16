@@ -9,11 +9,6 @@ import logging
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
-for i,p in enumerate(sys.path):
-    if "basil" in p:
-        del(sys.path[i])
-sys.path.append(r"d:/workspace/basil/basil_lfcpix")
-#sys.path.append(r"/home/user/workspace/basil/basil_lfcpix")
 from basil.dut import Dut
 
 import lfcpix_log
