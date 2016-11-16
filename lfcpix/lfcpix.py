@@ -45,7 +45,7 @@ class lfcpix():
         self.power()
         self.set_global()
         self.set_mon_en([14,25])
-        self.set_preamp_en([14,25])
+        self.set_preamp_en()
         self.set_inj_en([14,25])
         self.set_tdac(0)
         self.set_inj_all()
