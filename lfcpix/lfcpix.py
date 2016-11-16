@@ -594,7 +594,7 @@ class lfcpix():
             elif i> 100:
                 time.sleep(0.001) 
             i=i+1
-        return self.dut['sram'].get_data()[692:]
+        return self.dut['sram'].get_data()[173:]
 ##########################
 ########### TDC
     def set_tdc_inj(self,repeat=100,inj_width=500,gate_delay=5,
