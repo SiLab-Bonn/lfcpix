@@ -20,7 +20,7 @@ https://github.com/SiLab-Bonn/pyBAR/wiki/Step-by-step-Installation-Guide
 ./ipython.sh
 ```
 
-### Injection pulse at Monitor and Ampout
+### Inject pulses and observe Monitor and Ampout by an oscilloscope
 ```
 In [1]: import lfcpix
    ...: l=lfcpix.lfcpix()
