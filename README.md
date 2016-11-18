@@ -6,7 +6,7 @@ DAQ for LFCPIX prototype based on [Basil](https://github.com/SiLab-Bonn/basil) f
 
 ## Instalation
 
--install [conda](http://conda.pydata.org) for python. See [.travis.yml](https://github.com/SiLab-Bonn/lfcpix/blob/master/.travis.yml) for detail.
+- install [conda](http://conda.pydata.org) for python. See [.travis.yml](https://github.com/SiLab-Bonn/lfcpix/blob/master/.travis.yml) for detail.
 - for USB support see [pySiLibUSB](https://github.com/SiLab-Bonn/pySiLibUSB)
 - install basil
 - make a clone of lfcpix

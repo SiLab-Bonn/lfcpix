@@ -124,7 +124,7 @@ class lfcpix():
         self.dut['CCPD_VCascN'].set_voltage(VCascN, unit='V')
         
         self.logger.info("Vdda:%f Vddp:%f Vddd:%f VCasc2:%f VCascN:%f VCascP:%f TH:%f"%(
-                        Vdda,Vddp,Vddd,VCasc2,VCascN,VCascP))
+                        Vdda,Vddp,Vddd,VCasc2,VCascN,VCascP,TH))
                         
     def set_inj_all(self,inj_high=1.0,inj_low=0.0,inj_width=500,inj_n=1,delay=700,ext=True):
         self.dut["CCPD_Injection_high"].set_voltage(inj_high,unit="V")
