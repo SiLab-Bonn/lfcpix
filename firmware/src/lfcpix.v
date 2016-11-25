@@ -13,11 +13,10 @@
 `timescale 1ps / 1ps
 `default_nettype none
 
-
 `include "clk_gen.v"
 
 `include "utils/bus_to_ip.v"
- 
+
 `include "sram_fifo/sram_fifo_core.v"
 `include "sram_fifo/sram_fifo.v"
 

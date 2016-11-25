@@ -12,15 +12,14 @@ import sys
 import yaml
 import time
 
-root_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) #../
-sys.path.append( root_dir + "/lfcpix" )
-import lfcpix
-print 'root_dir', root_dir
+from lfcpix.lfcpix import lfcpix
 
 class TestSim(unittest.TestCase):
 
     def setUp(self):
         
+        root_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) #../
+        print root_dir
         cocotb_compile_and_run(
             sim_files = [root_dir + '/tests/lfcpix_tb.v'], 
             sim_bus = 'basil.utils.sim.SiLibUsbBusDriver',
@@ -32,7 +31,7 @@ class TestSim(unittest.TestCase):
 
         cnfg['transfer_layer'][0]['type'] = 'SiSim'
 
-        self.dut = lfcpix.lfcpix(conf=cnfg)
+        self.dut = lfcpix(conf=cnfg)
 
     def test(self):
         pass
