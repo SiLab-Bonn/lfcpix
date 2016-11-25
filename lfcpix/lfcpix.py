@@ -286,6 +286,7 @@ class lfcpix():
         self.dut['CCPD_SR']['LSBdacL']=LSBdacL
         self.dut['CCPD_SR']['LSBdacL2']=LSBdacL2
         self.dut['CCPD_SR']['IBCS2']=IBCS2
+        self.dut['CCPD_SR']['INJ_EN_AnaPassive']=0
         self._write_SR(sw="SW_LDDAC")
 
         self.logger.info('BLRes:%d VAmp:%d VPFB=:%d VPFoll:%d VPLoad:%d IComp:%d VSTRETCH:%dIBOTA:%d IBCS:%d WGT:%d LSBdacL:%d LSBdacL2:%d IBCS2:%d'%(
@@ -426,7 +427,6 @@ class lfcpix():
         self.dut['CCPD_SR']['INJECT_EN']=0
         self.dut['CCPD_SR']['MONITOR_EN']=0
         self.dut['CCPD_SR']['PREAMP_EN']=0
-        self.dut['CCPD_SR']['SW_MON']=self.sw_mon
         
         self.dut['CCPD_SR']['PREAMP_EN_ANA']=self.preamp_en_ana
         self.dut['CCPD_SR']['MONITOR_EN_ANA']=self.monitor_en_ana
