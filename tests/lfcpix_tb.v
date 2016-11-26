@@ -32,6 +32,7 @@ wire SRAM_CE1_B;
 wire SRAM_OE_B;
 wire SRAM_WE_B;
 
+wire SOUT, SIN, LDPIX, CKCONF, LDDAC, SR_EN, RESET, INJECTION;
 
 lfcpix fpga (
     .FCLK_IN(FCLK_IN),
@@ -51,8 +52,17 @@ lfcpix fpga (
     .SRAM_BLE_B(SRAM_BLE_B), 
     .SRAM_CE1_B(SRAM_CE1_B), 
     .SRAM_OE_B(SRAM_OE_B), 
-    .SRAM_WE_B(SRAM_WE_B)
- 
+    .SRAM_WE_B(SRAM_WE_B),
+    
+    .CCPD_SOUT(SOUT),   
+    .CCPD_SIN(SIN),
+    .CCPD_LDPIX(LDPIX),
+    .CCPD_CKCONF(CKCONF),  
+    .CCPD_LDDAC(LDDAC),  
+	.CCPD_SR_EN(SR_EN),
+    .CCPD_RESET(RESET),
+    .CCPD_INJECTION(INJECTION)
+    
 );   
 
 //SRAM Model
@@ -61,6 +71,55 @@ assign SRAM_IO = !SRAM_OE_B ? sram[SRAM_A] : 16'hzzzz;
 always@(negedge SRAM_WE_B)
     sram[SRAM_A] <= SRAM_IO;
 
+struct packed{
+    logic [2755:0] Pixels;
+    logic [0:0] REGULATOR_EN;
+    logic [0:0] BUFFER_EN;
+    logic [17:0] SW_INJ;
+    logic [35:0] SW_MON;
+    logic [9:0] MONITOR_EN_ANA;
+    logic [9:0] PREAMP_EN_ANA;
+    logic [0:0] PREAMP_EN;
+    logic [0:0] MONITOR_EN;
+    logic [0:0] INJECT_EN;
+    logic [3:0] TRIM_EN;
+    logic [35:0] INJ_EN_AnaPassive;
+    logic [5:0] IBCS2;
+    logic [5:0] LSBdacL2;
+    logic [5:0] LSBdacL;
+    logic [5:0] WGT;
+    logic [5:0] IBCS;
+    logic [5:0] IBOTA;
+    logic [5:0] VSTRETCH;
+    logic [5:0] IComp;
+    logic [5:0] VPLoad;
+    logic [5:0] VPFoll;
+    logic [5:0] VPFB;
+    logic [5:0] VAmp;
+    logic [5:0] BLRes;
+} lfcpix_sr;
+
+logic [2755:0] INJECT_EN, PREAMP_EN;
+
+always@(posedge CKCONF or posedge RESET or posedge INJECTION)
+    if(RESET)
+        lfcpix_sr <= 0;
+    else if(INJECTION)
+        lfcpix_sr.Pixels <= ~(INJECT_EN & PREAMP_EN) & lfcpix_sr.Pixels;
+    else
+        lfcpix_sr <= {lfcpix_sr[$bits(lfcpix_sr)-1:0], SIN};
+
+assign SOUT = lfcpix_sr[$bits(lfcpix_sr)-1];
+         
+
+always@(*)
+    if(lfcpix_sr.INJECT_EN & LDPIX)
+        INJECT_EN = lfcpix_sr.Pixels;
+
+always@(*)
+    if(lfcpix_sr.PREAMP_EN & LDPIX)
+        PREAMP_EN = lfcpix_sr.Pixels;
+ 
 initial begin
     
     $dumpfile("lfcpix.vcd");

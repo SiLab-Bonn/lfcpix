@@ -62,7 +62,6 @@
 `include "tlu/tlu_controller_fsm.v"
 
 `ifdef COCOTB_SIM //for simulation
-    `include "utils/RAMB16_S1_S2_sim.v"
     `include "utils/ODDR_sim.v"
     `include "utils/IDDR_sim.v"
     `include "utils/DCM_sim.v"
