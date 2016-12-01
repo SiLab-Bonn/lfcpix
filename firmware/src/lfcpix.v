@@ -13,6 +13,70 @@
 `timescale 1ps / 1ps
 `default_nettype none
 
+`include "clk_gen.v"
+
+`include "utils/bus_to_ip.v"
+
+`include "sram_fifo/sram_fifo_core.v"
+`include "sram_fifo/sram_fifo.v"
+
+`include "rrp_arbiter/rrp_arbiter.v"
+
+`include "utils/cdc_syncfifo.v"
+`include "utils/generic_fifo.v"
+`include "utils/cdc_pulse_sync.v"
+
+`include "utils/reset_gen.v"
+`include "utils/pulse_gen_rising.v"
+`include "utils/CG_MOD_pos.v"
+ 
+`include "spi/spi_core.v"
+`include "spi/spi.v"
+`include "spi/blk_mem_gen_8_to_1_2k.v"
+
+`include "gpio/gpio.v"
+
+`include "gpac_adc_rx/gpac_adc_iobuf.v"
+`include "gpac_adc_rx/gpac_adc_rx.v"
+`include "gpac_adc_rx/gpac_adc_rx_core.v"
+
+`include "utils/cdc_reset_sync.v"
+
+`include "utils/fx2_to_bus.v"
+
+`include "pulse_gen/pulse_gen.v"
+`include "pulse_gen/pulse_gen_core.v"
+
+`include "tdc_s3/tdc_s3.v"
+`include "tdc_s3/tdc_s3_core.v"
+`include "utils/3_stage_synchronizer.v"
+`include "utils/ddr_des.v"
+
+`include "utils/flag_domain_crossing.v"
+
+`include "fast_spi_rx/fast_spi_rx.v"
+`include "fast_spi_rx/fast_spi_rx_core.v"
+
+`include "tlu/tlu_controller.v"
+`include "tlu/tlu_controller_core.v"
+`include "tlu/tlu_controller_fsm.v"
+
+`ifdef COCOTB_SIM //for simulation
+    `include "utils/ODDR_sim.v"
+    `include "utils/IDDR_sim.v"
+    `include "utils/DCM_sim.v"
+    `include "utils/clock_multiplier.v"
+    `include "utils/BUFG_sim.v"
+
+    `include "utils/RAMB16_S1_S9_sim.v"
+    `include "utils/IBUFDS_sim.v"
+    `include "utils/IBUFGDS_sim.v"
+    `include "utils/OBUFDS_sim.v"
+`else
+    `include "utils/IDDR_s3.v"
+    `include "utils/ODDR_s3.v"
+`endif 
+
 module lfcpix (
     
     input wire FCLK_IN, // 48MHz
@@ -136,11 +200,9 @@ assign TX[2] = CCPD_INJECTION;
 reset_gen ireset_gen(.CLK(BUS_CLK), .RST(BUS_RST));
 
 
-
 clk_gen iclkgen(
     .U1_CLKIN_IN(FCLK_IN),
     .U1_RST_IN(1'b0),
-    .U1_CLKIN_IBUFG_OUT(),
     .U1_CLK0_OUT(BUS_CLK), // DCM1: 48MHz USB/SRAM clock
     .U1_STATUS_OUT(),
     .U2_CLKFX_OUT(CLK_40),  // DCM2: 40MHz command clock
@@ -211,11 +273,20 @@ localparam CCPD_GPIO_TH2_HIGHADDR = 16'h8ccf;
 
 // -------  BUS SYGNALING  ------- //
 wire [15:0] BUS_ADD;
-assign BUS_ADD = ADD - 16'h4000;
 wire BUS_RD, BUS_WR;
-assign BUS_RD = ~RD_B;
-assign BUS_WR = ~WR_B;
 
+// -------  BUS SYGNALING  ------- //
+fx2_to_bus i_fx2_to_bus (
+    .ADD(ADD),
+    .RD_B(RD_B),
+    .WR_B(WR_B),
+
+    .BUS_CLK(BUS_CLK),
+    .BUS_ADD(BUS_ADD),
+    .BUS_RD(BUS_RD),
+    .BUS_WR(BUS_WR),
+    .CS_FPGA()
+);
 
 // -------  USER MODULES  ------- //
 

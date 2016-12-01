@@ -90,3 +90,11 @@ ENV/
 
 # Rope project settings
 .ropeproject
+
+/firmware/ise/*
+!*.xise
+
+tests/Makefile
+tests/results.xml
+tests/sim_build
+tests/*.vcd

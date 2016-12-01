@@ -36,7 +36,7 @@ class lfcpix():
         self.sw_inj=self.dut["CCPD_SR"]["SW_INJ"].copy()
         self.tdac=np.ones([26,106],int)*0
         
-       # init chip
+    def init_chip(self):
         self.power()
         self.set_global()
         self.set_mon_en([14,25])
@@ -45,7 +45,7 @@ class lfcpix():
         self.set_tdac(0)
         self.set_inj_all()
         self.show()
-        
+    
     def _build_img_one(self,spix):
             frame=spix/2768
             spix=2755-spix%2768

@@ -22,7 +22,7 @@ install:
   - bash miniconda.sh -b -p $HOME/miniconda
   - export PATH=$HOME/miniconda/bin:$PATH
   - conda update --yes conda
-  - conda install --yes numpy bitarray pytest pyyaml numba mock matplotlib scipy pytables bokeh pandas progressbar
+  - conda install --yes numpy bitarray pytest pyyaml numba mock matplotlib pytables scipy progressbar
   
   #cocotb
   - git clone https://github.com/potentialventures/cocotb.git
@@ -31,10 +31,10 @@ install:
   - git reset --hard 6ff0d3985a51c681ddd633ad453202c9020c08fe
   - cd ..
 
-  - git clone -b v2.4.3 https://github.com/SiLab-Bonn/basil; cd basil; python setup.py develop; cd ..;
-
-  # Install basil
   - python setup.py develop
+  
+  # Install basil  
+  - git clone -b v2.4.3 https://github.com/SiLab-Bonn/basil; cd basil; python setup.py develop; cd ..;
 
 script:
   - cd tests;  py.test -s
