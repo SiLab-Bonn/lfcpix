@@ -4,7 +4,7 @@ DAQ for LFCPIX prototype based on [Basil](https://github.com/SiLab-Bonn/basil) f
 
 ## Instalation
 
-See [.travis.yml](https://github.com/SiLab-Bonn/lfcpix/blob/master/.travis.yml) for detail.
+See [.travis.yml](.travis.yml) for detail.
 
 - Install [conda](http://conda.pydata.org) for python and needed packages :
 ```bash
@@ -12,7 +12,7 @@ curl https://repo.continuum.io/miniconda/Miniconda2-latest-Linux-x86_64.sh -o mi
 bash miniconda.sh -b -p $HOME/miniconda
 export PATH=$HOME/miniconda/bin:$PATH
 conda update --yes conda
-conda install --yes numpy bitarray pytest pyyaml numba mock matplotlib scipy pytables bokeh pandas progressbar
+conda install --yes numpy bitarray pytest pyyaml numba mock matplotlib scipy pytables progressbar
 ```
 
 - Install [pySiLibUSB](https://github.com/SiLab-Bonn/pySiLibUSB) for USB support
