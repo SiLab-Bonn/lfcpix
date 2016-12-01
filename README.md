@@ -1,5 +1,7 @@
 # LFCPIX
 
+[![Build Status](https://travis-ci.org/SiLab-Bonn/lfcpix.svg?branch=master)](https://travis-ci.org/SiLab-Bonn/lfcpix)
+
 DAQ for LFCPIX prototype based on [Basil](https://github.com/SiLab-Bonn/basil) framwork.
 
 ## Instalation
