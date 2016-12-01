@@ -37,5 +37,5 @@ install:
   - git clone -b v2.4.3 https://github.com/SiLab-Bonn/basil; cd basil; python setup.py develop; cd ..;
 
 script:
-  - cd tests;  py.test -s
+  - cd tests;  travis_wait py.test -s
 
